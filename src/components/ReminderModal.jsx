@@ -29,33 +29,38 @@ export default function ReminderModal({ medication, onClose, onSave }) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold flex items-center gap-2">
-            <Clock className="text-medical-primary" />
-            Set Reminder for {medication.name}
-          </h2>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
+      <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-xl border border-gray-200">
+        <div className="flex justify-between items-center mb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
+              <Clock className="text-blue-600" size={20} />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-gray-900">Set Reminder</h2>
+              <p className="text-xs text-gray-500">{medication.name}</p>
+            </div>
+          </div>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
-            <X size={24} />
+            <X size={20} />
           </button>
         </div>
 
         <div className="space-y-4">
           <div>
-            <label className="flex items-center gap-2 mb-2">
+            <label className="flex items-center gap-2 mb-3">
               <input
                 type="checkbox"
                 checked={enabled}
                 onChange={(e) => setEnabled(e.target.checked)}
-                className="w-4 h-4"
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
-              <span className="font-semibold">Enable Reminders</span>
+              <span className="text-sm font-medium text-gray-700">Enable Reminders</span>
             </label>
           </div>
 
           <div>
-            <label className="block text-sm font-semibold mb-2">Reminder Times</label>
+            <label className="block text-sm font-semibold mb-2 text-gray-700">Reminder Times</label>
             <div className="space-y-2">
               {reminderTimes.map((time, index) => (
                 <div key={index} className="flex items-center gap-2">
@@ -63,12 +68,12 @@ export default function ReminderModal({ medication, onClose, onSave }) {
                     type="time"
                     value={time}
                     onChange={(e) => updateTime(index, e.target.value)}
-                    className="flex-1 border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-medical-primary focus:outline-none"
+                    className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   {reminderTimes.length > 1 && (
                     <button
                       onClick={() => removeTime(index)}
-                      className="px-3 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200"
+                      className="px-3 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 text-sm font-medium"
                     >
                       Remove
                     </button>
@@ -77,23 +82,23 @@ export default function ReminderModal({ medication, onClose, onSave }) {
               ))}
               <button
                 onClick={addTime}
-                className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
+                className="w-full px-4 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 text-sm font-medium border border-gray-200"
               >
                 + Add Another Time
               </button>
             </div>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex gap-3 pt-4">
             <button
               onClick={handleSave}
-              className="flex-1 bg-medical-primary text-white py-3 rounded-lg font-semibold hover:bg-blue-700"
+              className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
             >
               Save Reminder
             </button>
             <button
               onClick={onClose}
-              className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+              className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium"
             >
               Cancel
             </button>
@@ -103,4 +108,3 @@ export default function ReminderModal({ medication, onClose, onSave }) {
     </div>
   )
 }
-

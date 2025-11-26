@@ -102,11 +102,16 @@ export default function AddPrescription({ doctorName, currentMedications, patien
   }
   
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-        <Plus className="text-medical-primary" />
-        Add New Prescription
-      </h2>
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
+          <Plus className="text-green-600" size={24} />
+        </div>
+        <div>
+          <h2 className="text-xl font-bold text-gray-900">Add New Prescription</h2>
+          <p className="text-sm text-gray-500">Create prescription and notes</p>
+        </div>
+      </div>
       
       <div className="space-y-4 mb-6">
         <div>
@@ -116,7 +121,7 @@ export default function AddPrescription({ doctorName, currentMedications, patien
           <input 
             type="text"
             placeholder="e.g., Aspirin, Metformin, Ibuprofen"
-            className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-medical-primary focus:outline-none"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
             value={formData.name}
             onChange={(e) => setFormData({...formData, name: e.target.value})}
           />
@@ -129,7 +134,7 @@ export default function AddPrescription({ doctorName, currentMedications, patien
           <input 
             type="text"
             placeholder="e.g., 75mg, 500mg, 5mg"
-            className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-medical-primary focus:outline-none"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
             value={formData.dosage}
             onChange={(e) => setFormData({...formData, dosage: e.target.value})}
           />
@@ -142,7 +147,7 @@ export default function AddPrescription({ doctorName, currentMedications, patien
           <input 
             type="text"
             placeholder="e.g., Once daily, Twice daily, Three times a day"
-            className="w-full border-2 border-gray-300 rounded-lg px-4 py-2 focus:border-medical-primary focus:outline-none"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
             value={formData.frequency}
             onChange={(e) => setFormData({...formData, frequency: e.target.value})}
           />
@@ -150,7 +155,7 @@ export default function AddPrescription({ doctorName, currentMedications, patien
         
         <button 
           onClick={handleAddMedication}
-          className="w-full bg-medical-primary text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-md"
+          className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
         >
           <Plus size={20} />
           Check & Add Medication
@@ -166,7 +171,7 @@ export default function AddPrescription({ doctorName, currentMedications, patien
         </h3>
         <textarea 
           placeholder="Enter observations, diagnosis, treatment plan, or follow-up instructions..."
-          className="w-full border-2 border-gray-300 rounded-lg px-4 py-3 h-28 focus:border-green-600 focus:outline-none resize-none"
+          className="w-full border border-gray-300 rounded-lg px-4 py-3 h-28 focus:border-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
           value={noteText}
           onChange={(e) => setNoteText(e.target.value)}
         />

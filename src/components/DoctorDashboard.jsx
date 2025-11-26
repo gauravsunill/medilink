@@ -24,24 +24,10 @@ export default function DoctorDashboard({ patient: initialPatient, doctorName, o
   }
   
   return (
-    <div className="container mx-auto p-4 max-w-7xl">
-      <div className="bg-white shadow-md rounded-lg p-6 mb-6 flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-            <User className="text-medical-primary" size={32} />
-            Welcome, Dr. {doctorName}
-          </h1>
-          <p className="text-gray-600 mt-1 text-lg">
-            Viewing patient: <span className="font-semibold">{patient.name}</span>
-          </p>
-        </div>
-        <button 
-          onClick={onLogout}
-          className="flex items-center gap-2 px-6 py-3 border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-semibold"
-        >
-          <LogOut size={20} />
-          Logout
-        </button>
+    <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome, Dr. {doctorName}</h1>
+        <p className="text-gray-600">Viewing patient: <span className="font-semibold">{patient.name}</span></p>
       </div>
       
       <EmergencyCard patient={patient} />

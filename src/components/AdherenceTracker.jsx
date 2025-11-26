@@ -70,14 +70,19 @@ export default function AdherenceTracker({ medicationId }) {
   }
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mt-4">
-      <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-        <TrendingUp className="text-medical-primary" />
-        Medication Adherence
-      </h2>
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
+          <TrendingUp className="text-blue-600" size={24} />
+        </div>
+        <div>
+          <h2 className="text-xl font-bold text-gray-900">Medication Adherence</h2>
+          <p className="text-sm text-gray-500">Track your medication compliance</p>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="bg-green-50 p-4 rounded-lg border-2 border-green-200">
+        <div className="bg-green-50 p-4 rounded-lg border border-green-200">
           <div className="flex items-center gap-2 mb-2">
             <CheckCircle className="text-green-600" size={24} />
             <span className="font-semibold text-green-800">Taken</span>
@@ -86,7 +91,7 @@ export default function AdherenceTracker({ medicationId }) {
           <p className="text-sm text-green-600">Last 7 days</p>
         </div>
 
-        <div className="bg-red-50 p-4 rounded-lg border-2 border-red-200">
+        <div className="bg-red-50 p-4 rounded-lg border border-red-200">
           <div className="flex items-center gap-2 mb-2">
             <XCircle className="text-red-600" size={24} />
             <span className="font-semibold text-red-800">Missed</span>
@@ -95,7 +100,7 @@ export default function AdherenceTracker({ medicationId }) {
           <p className="text-sm text-red-600">Last 7 days</p>
         </div>
 
-        <div className="bg-blue-50 p-4 rounded-lg border-2 border-blue-200">
+        <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
           <div className="flex items-center gap-2 mb-2">
             <Calendar className="text-blue-600" size={24} />
             <span className="font-semibold text-blue-800">Adherence</span>

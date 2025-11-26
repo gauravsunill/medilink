@@ -122,20 +122,25 @@ export default function PrescriptionScanner({ onMedicationAdded, currentMeds }) 
   }
   
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mt-4">
-      <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-        <Camera className="text-medical-primary" />
-        Scan Prescription
-      </h2>
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
+          <Camera className="text-blue-600" size={24} />
+        </div>
+        <div>
+          <h2 className="text-xl font-bold text-gray-900">Scan Prescription</h2>
+          <p className="text-sm text-gray-500">OCR-based digitization</p>
+        </div>
+      </div>
       
-      <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 mb-4">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
         <p className="text-sm text-gray-700">
           <strong>📸 Tips for best results:</strong> Ensure good lighting, clear handwriting visible, 
           and capture the entire prescription in frame.
         </p>
       </div>
       
-      <label className="flex flex-col items-center justify-center border-3 border-dashed border-gray-400 rounded-xl p-10 cursor-pointer hover:border-medical-primary hover:bg-blue-50 transition-all">
+      <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-xl p-10 cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-all">
         <Upload size={56} className="text-gray-400 mb-3" />
         <span className="text-gray-700 font-semibold text-lg">Click to upload prescription</span>
         <span className="text-gray-500 text-sm mt-1">Supports JPG, PNG, or PDF</span>
@@ -150,13 +155,13 @@ export default function PrescriptionScanner({ onMedicationAdded, currentMeds }) 
       
       {scanning && (
         <div className="mt-6">
-          <div className="flex items-center justify-center gap-3 text-medical-primary mb-3">
+          <div className="flex items-center justify-center gap-3 text-blue-600 mb-3">
             <Loader2 className="animate-spin" size={24} />
             <span className="font-semibold">Scanning prescription... {progress}%</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3">
             <div 
-              className="bg-medical-primary h-3 rounded-full transition-all duration-300"
+              className="bg-blue-600 h-3 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -164,14 +169,14 @@ export default function PrescriptionScanner({ onMedicationAdded, currentMeds }) 
       )}
       
       {extractedMeds.length > 0 && !scanning && (
-        <div className="mt-6 p-4 bg-green-50 border-2 border-green-300 rounded-lg">
+        <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
           <h3 className="font-bold mb-3 flex items-center gap-2 text-green-800">
             <CheckCircle size={20} />
             Detected Medications ({extractedMeds.length}):
           </h3>
           <ul className="space-y-2">
             {extractedMeds.map((med, i) => (
-              <li key={i} className="bg-white p-3 rounded border-l-4 border-green-500">
+              <li key={i} className="bg-white p-3 rounded border-l-2 border-green-500">
                 <p className="font-semibold">{med.name}</p>
                 <p className="text-sm text-gray-600">{med.dosage} • {med.frequency}</p>
               </li>

@@ -107,18 +107,23 @@ export default function LabResults({ patient, onUpdate }) {
   })
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mt-4">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold flex items-center gap-2">
-          <FileText className="text-medical-primary" />
-          Lab Results ({labResults.length})
-        </h2>
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
+            <FileText className="text-blue-600" size={24} />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-gray-900">Lab Results</h2>
+            <p className="text-sm text-gray-500">{labResults.length} results</p>
+          </div>
+        </div>
         <button
           onClick={() => setShowModal(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 text-sm font-medium"
         >
-          <Plus size={18} />
-          Add Lab Result
+          <Plus size={16} />
+          Add Result
         </button>
       </div>
 
@@ -137,7 +142,7 @@ export default function LabResults({ patient, onUpdate }) {
                 }))
 
               return (
-                <div key={result.id} className={`border-2 rounded-lg p-4 ${getStatusColor(result.status)}`}>
+                <div key={result.id} className={`border rounded-lg p-4 ${getStatusColor(result.status)}`}>
                   <div className="flex justify-between items-start mb-3">
                     <div>
                       <h3 className="font-bold text-lg">{result.testName}</h3>

@@ -8,7 +8,10 @@ export default {
           primary: '#2563eb',
           secondary: '#3b82f6',
         }
-      }
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
     },
   },
   plugins: [],
