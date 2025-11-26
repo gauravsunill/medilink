@@ -1,4 +1,4 @@
-# MedVault - Unified Health Records Platform
+# MediLink - Unified Health Records Platform
 
 A comprehensive healthcare record management system built for hackathons, featuring unified patient records, real-time drug interaction alerts, and intelligent OCR prescription scanning.
 
