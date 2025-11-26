@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Activity, LogOut } from 'lucide-react'
 import { storage } from './utils/localStorage'
+import { reminderService } from './utils/reminderService'
 import HomePage from './components/HomePage'
 import PatientLogin from './components/PatientLogin'
 import PatientProfile from './components/PatientProfile'
@@ -9,6 +10,10 @@ import PrescriptionScanner from './components/PrescriptionScanner'
 import Timeline from './components/Timeline'
 import ShareAccess from './components/ShareAccess'
 import Scans from './components/Scans'
+import AllergyReactions from './components/AllergyReactions'
+import LabResults from './components/LabResults'
+import EmergencyCard from './components/EmergencyCard'
+import AdherenceTracker from './components/AdherenceTracker'
 import DoctorLogin from './components/DoctorLogin'
 import DoctorDashboard from './components/DoctorDashboard'
 
@@ -22,6 +27,15 @@ function App() {
   useEffect(() => {
     const patientData = storage.getPatient()
     setPatient(patientData)
+    
+    // Initialize reminder service
+    reminderService.requestPermission().then(() => {
+      reminderService.start()
+    })
+    
+    return () => {
+      reminderService.stop()
+    }
   }, [refreshKey])
   
   const handleSelectPortal = (portal) => {
@@ -138,12 +152,16 @@ function App() {
       <main>
         {view === 'patient-dashboard' && (
           <div className="container mx-auto p-4 max-w-4xl">
+            <EmergencyCard patient={patient} />
             <PatientProfile patient={patient} />
+            <AllergyReactions patient={patient} onUpdate={handleMedicationAdded} />
             <MedicationList medications={patient.medications} />
+            <AdherenceTracker medicationId={patient.medications?.[0]?.id} />
             <PrescriptionScanner 
               onMedicationAdded={handleMedicationAdded}
               currentMeds={patient.medications}
             />
+            <LabResults patient={patient} onUpdate={handleMedicationAdded} />
             <Scans scans={patient.scans || []} isDoctor={false} />
             <Timeline 
               medications={patient.medications}

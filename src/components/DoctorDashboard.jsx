@@ -6,6 +6,9 @@ import MedicationList from './MedicationList'
 import Timeline from './Timeline'
 import AddPrescription from './AddPrescription'
 import Scans from './Scans'
+import AllergyReactions from './AllergyReactions'
+import LabResults from './LabResults'
+import EmergencyCard from './EmergencyCard'
 
 export default function DoctorDashboard({ patient: initialPatient, doctorName, onLogout }) {
   const [refreshKey, setRefreshKey] = useState(0)
@@ -41,9 +44,12 @@ export default function DoctorDashboard({ patient: initialPatient, doctorName, o
         </button>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <EmergencyCard patient={patient} />
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         <div className="space-y-6">
           <PatientProfile patient={patient} />
+          <AllergyReactions patient={patient} onUpdate={handlePrescriptionAdded} />
           <MedicationList medications={patient.medications} />
           <Scans scans={patient.scans || []} isDoctor={true} />
         </div>
@@ -52,8 +58,10 @@ export default function DoctorDashboard({ patient: initialPatient, doctorName, o
           <AddPrescription 
             doctorName={doctorName}
             currentMedications={patient.medications}
+            patient={patient}
             onPrescriptionAdded={handlePrescriptionAdded}
           />
+          <LabResults patient={patient} onUpdate={handlePrescriptionAdded} />
           <Timeline 
             medications={patient.medications}
             notes={patient.notes}

@@ -4,14 +4,25 @@ import { storage } from '../utils/localStorage'
 import { checkInteractions } from '../data/drugInteractions'
 import DrugInteractionAlert from './DrugInteractionAlert'
 
-export default function AddPrescription({ doctorName, currentMedications, onPrescriptionAdded }) {
+export default function AddPrescription({ doctorName, currentMedications, patient, onPrescriptionAdded }) {
   const [formData, setFormData] = useState({
     name: '',
     dosage: '',
     frequency: ''
   })
   const [interactions, setInteractions] = useState([])
+  const [allergyWarning, setAllergyWarning] = useState(null)
   const [noteText, setNoteText] = useState('')
+  const [overrideReason, setOverrideReason] = useState('')
+  
+  const checkAllergies = (drugName) => {
+    const reactions = patient?.reactions || []
+    const drugLower = drugName.toLowerCase().trim()
+    
+    return reactions.find(reaction => 
+      reaction.drugName.toLowerCase().trim() === drugLower
+    )
+  }
   
   const handleAddMedication = () => {
     if (!formData.name || !formData.dosage || !formData.frequency) {
@@ -19,6 +30,14 @@ export default function AddPrescription({ doctorName, currentMedications, onPres
       return
     }
     
+    // Check for allergies first
+    const allergy = checkAllergies(formData.name)
+    if (allergy) {
+      setAllergyWarning(allergy)
+      return
+    }
+    
+    // Check for drug interactions
     const foundInteractions = checkInteractions(formData.name, currentMedications)
     
     if (foundInteractions.length > 0) {
@@ -33,6 +52,25 @@ export default function AddPrescription({ doctorName, currentMedications, onPres
       onPrescriptionAdded()
       alert('✅ Medication added successfully!')
     }
+  }
+  
+  const handleOverrideAllergy = () => {
+    if (!overrideReason.trim()) {
+      alert('Please provide a reason for overriding the allergy warning')
+      return
+    }
+    
+    storage.addMedication({
+      ...formData,
+      doctor: doctorName,
+      overrideReason: overrideReason
+    })
+    
+    setFormData({ name: '', dosage: '', frequency: '' })
+    setAllergyWarning(null)
+    setOverrideReason('')
+    onPrescriptionAdded()
+    alert('⚠️ Medication added despite allergy warning! Reason logged.')
   }
   
   const handleForceAdd = () => {
@@ -147,6 +185,63 @@ export default function AddPrescription({ doctorName, currentMedications, onPres
             setInteractions([])
           }}
         />
+      )}
+
+      {allergyWarning && (
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl max-w-2xl w-full p-8 shadow-2xl">
+            <div className="bg-red-100 border-4 border-red-600 rounded-lg p-6 mb-6">
+              <h2 className="text-3xl font-bold text-red-800 mb-4 flex items-center gap-2">
+                ⚠️ CRITICAL ALLERGY WARNING
+              </h2>
+              <p className="text-xl font-semibold text-red-900 mb-2">
+                PATIENT ALLERGIC TO: <span className="text-red-600">{allergyWarning.drugName.toUpperCase()}</span>
+              </p>
+              <p className="text-lg text-red-800 mb-2">
+                Documented Reaction: <span className="font-bold">{allergyWarning.reactionType}</span>
+              </p>
+              <p className="text-lg text-red-800 mb-2">
+                Severity: <span className="font-bold">{allergyWarning.severity.toUpperCase()}</span>
+              </p>
+              <p className="text-sm text-red-700">
+                Date: {new Date(allergyWarning.date).toLocaleDateString('en-IN')}
+              </p>
+              {allergyWarning.description && (
+                <p className="text-sm text-red-700 mt-2">{allergyWarning.description}</p>
+              )}
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-sm font-semibold mb-2">
+                Reason for Override (Required) *
+              </label>
+              <textarea
+                value={overrideReason}
+                onChange={(e) => setOverrideReason(e.target.value)}
+                className="w-full border-2 border-red-300 rounded-lg px-4 py-3 h-24 focus:border-red-600 focus:outline-none resize-none"
+                placeholder="Explain why this medication is necessary despite the allergy..."
+              />
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={handleOverrideAllergy}
+                className="flex-1 bg-red-600 text-white py-4 rounded-lg font-bold text-lg hover:bg-red-700"
+              >
+                Override & Add Medication
+              </button>
+              <button
+                onClick={() => {
+                  setAllergyWarning(null)
+                  setOverrideReason('')
+                }}
+                className="px-6 py-4 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-semibold"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )
