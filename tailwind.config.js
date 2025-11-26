@@ -10,7 +10,7 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['"TWK Everett"', 'Inter', 'system-ui', 'sans-serif'],
       },
     },
   },
