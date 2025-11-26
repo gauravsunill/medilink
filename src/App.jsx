@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import { Activity, LogOut, Search, Bell, User as UserIcon } from 'lucide-react'
+import { Activity, LogOut, Search, Bell, User as UserIcon, Moon, Sun } from 'lucide-react'
 import { storage } from './utils/localStorage'
 import { reminderService } from './utils/reminderService'
+import { useTheme } from './contexts/ThemeContext'
 import HomePage from './components/HomePage'
 import PatientLogin from './components/PatientLogin'
 import PatientProfile from './components/PatientProfile'
@@ -18,6 +19,7 @@ import DoctorLogin from './components/DoctorLogin'
 import DoctorDashboard from './components/DoctorDashboard'
 
 function App() {
+  const { isDark, toggleTheme } = useTheme()
   const [view, setView] = useState('home')
   const [patient, setPatient] = useState(null)
   const [doctorName, setDoctorName] = useState('')
@@ -80,8 +82,8 @@ function App() {
   
   if (!patient) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin text-blue-600">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center transition-colors">
+        <div className="animate-spin text-blue-600 dark:text-blue-400">
           <Activity size={48} />
         </div>
       </div>
@@ -114,39 +116,53 @@ function App() {
   }
   
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       {/* Modern Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
+      <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40 transition-colors">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-blue-600 dark:bg-blue-500 rounded-full flex items-center justify-center">
                 <Activity className="text-white" size={24} />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">MediLink</h1>
-                <p className="text-xs text-gray-500">Healthcare Platform</p>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">MediLink</h1>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Healthcare Platform</p>
               </div>
             </div>
             
             <div className="flex items-center gap-4">
               <div className="relative hidden md:block">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500" size={18} />
                 <input
                   type="text"
                   placeholder="Search anything in MediLink"
-                  className="pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-sm w-64 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
                 />
               </div>
+              
+              {/* Dark Mode Toggle */}
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                aria-label="Toggle dark mode"
+                title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {isDark ? (
+                  <Sun className="text-yellow-500" size={20} />
+                ) : (
+                  <Moon className="text-gray-600 dark:text-gray-300" size={20} />
+                )}
+              </button>
               
               {view === 'patient-dashboard' && (
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <p className="text-sm font-medium text-gray-900">{patient.name}</p>
-                    <p className="text-xs text-gray-500">Patient</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">{patient.name}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Patient</p>
                   </div>
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                    <UserIcon className="text-blue-600" size={20} />
+                  <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+                    <UserIcon className="text-blue-600 dark:text-blue-400" size={20} />
                   </div>
                 </div>
               )}
@@ -154,18 +170,18 @@ function App() {
               {view === 'doctor-dashboard' && (
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <p className="text-sm font-medium text-gray-900">Dr. {doctorName}</p>
-                    <p className="text-xs text-gray-500">Doctor</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">Dr. {doctorName}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Doctor</p>
                   </div>
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                    <UserIcon className="text-green-600" size={20} />
+                  <div className="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                    <UserIcon className="text-green-600 dark:text-green-400" size={20} />
                   </div>
                 </div>
               )}
               
               <button
                 onClick={view === 'patient-dashboard' ? handlePatientLogout : handleDoctorLogout}
-                className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                className="flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               >
                 <LogOut size={18} />
                 <span className="hidden md:inline">Logout</span>
@@ -180,8 +196,8 @@ function App() {
           <div className="space-y-6">
             {/* Welcome Section */}
             <div className="mb-6">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, {patient.name}!</h1>
-              <p className="text-gray-600">Here's your health overview</p>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Welcome back, {patient.name}!</h1>
+              <p className="text-gray-600 dark:text-gray-400">Here's your health overview</p>
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
